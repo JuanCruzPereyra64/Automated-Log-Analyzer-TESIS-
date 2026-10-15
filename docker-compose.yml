@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  # 1. Base de Datos (PostgreSQL)
+  # Aquí guardaremos las alertas de seguridad que n8n detecte.
+  postgres:
+    image: postgres:15-alpine
+    container_name: siem-postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=security_monitoring
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+
+  # 2. El Orquestador (n8n)
+  # Este es el cerebro que analizará los logs.
+  n8n:
+    image: docker.n8n.io/n8nio/n8n
+    container_name: siem-n8n
+    restart: always
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_SECURE_COOKIE=false
+    volumes:
+      - ./n8n-data:/home/node/.n8n
+      - ./logs:/home/node/.n8n-files
+    depends_on:
+      - postgres
