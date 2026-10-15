@@ -1,0 +1,20 @@
+# Datos generados de Postgres - NO subir (se regenera solo, pesa 45MB)
+postgres-data/
+
+# Archivos temporales de SQLite de n8n - NO subir
+n8n-data/*-shm
+n8n-data/*-wal
+n8n-data/*.shm
+n8n-data/*.wal
+n8n-data/*.log
+n8n-data/crash.journal
+n8n-data/n8nEventLog*.log
+
+# Ejecuciones y binarios temporales de n8n
+n8n-data/binaryData/
+n8n-data/logs/
+n8n-data/.cache/
+
+# IMPORTANTE: SI se sube esto (es tu flujo):
+# n8n-data/database.sqlite
+# n8n-data/config
