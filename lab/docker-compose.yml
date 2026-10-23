@@ -1,0 +1,69 @@
+name: siem-lab
+
+services:
+  lab-postgres:
+    image: postgres:15-alpine
+    container_name: lab-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=security_monitoring
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    networks:
+      - labnet
+
+  lab-n8n:
+    image: docker.n8n.io/n8nio/n8n:latest
+    container_name: lab-n8n
+    restart: unless-stopped
+    ports:
+      - "5679:5678"
+    environment:
+      - N8N_SECURE_COOKIE=false
+      - NODE_FUNCTION_ALLOW_EXTERNAL=pg,fs,readline,child_process,util
+      - NODE_FUNCTION_ALLOW_BUILTIN=fs,readline,child_process,util,http,https,os,path,crypto,net
+      - N8N_RESTRICT_FILE_ACCESS_TO=/home/node/.n8n-files;/logs
+      - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
+      - N8N_RUNNERS_GRANT_TOKEN_TTL=300
+      - N8N_RUNNERS_TASK_TIMEOUT=120
+      - GENERIC_TIMEZONE=UTC
+      - TZ=UTC
+    volumes:
+      - ./n8ndata:/home/node/.n8n
+      - ./runtime/logs:/home/node/.n8n-files
+    networks:
+      - labnet
+    depends_on:
+      - lab-postgres
+
+  victim:
+    build: ./victim
+    container_name: lab-victim
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - SYSLOG
+    volumes:
+      - ./runtime/logs:/var/log
+    networks:
+      - labnet
+
+  attacker:
+    build: ./attacker
+    container_name: lab-attacker
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./runtime/logs:/logs
+    networks:
+      - labnet
+
+networks:
+  labnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.50.0.0/24

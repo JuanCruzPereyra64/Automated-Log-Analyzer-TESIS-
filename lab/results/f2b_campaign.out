@@ -1,0 +1,52 @@
+=== campana arm=f2b n=10 spacing=300.0s jitter=60.0s seed=12345 -> C:\Users\Usuario\Documents\TestTesis\lab\results\f2b_e1.jsonl
+[f2b] episodio 1/10 src=10.50.0.200
+   Server ready
+f2b started
+   victim reset ok
+  -> detected=True contained=True MTTD=0.94 MTTR=0.75
+  reposo 301s (gap objetivo 325s)
+[f2b] episodio 2/10 src=10.50.0.201
+   f2b already running
+   victim reset ok
+  -> detected=True contained=True MTTD=0.89 MTTR=0.53
+  reposo 284s (gap objetivo 301s)
+[f2b] episodio 3/10 src=10.50.0.202
+   f2b already running
+   victim reset ok
+  -> detected=True contained=True MTTD=2.17 MTTR=0.68
+  reposo 328s (gap objetivo 350s)
+[f2b] episodio 4/10 src=10.50.0.203
+   f2b already running
+   victim reset ok
+  -> detected=True contained=True MTTD=0.86 MTTR=0.55
+  reposo 302s (gap objetivo 318s)
+[f2b] episodio 5/10 src=10.50.0.204
+   f2b already running
+   victim reset ok
+  -> detected=True contained=True MTTD=1.06 MTTR=0.3
+  reposo 309s (gap objetivo 322s)
+[f2b] episodio 6/10 src=10.50.0.205
+   f2b already running
+   victim reset ok
+  -> detected=True contained=True MTTD=1.18 MTTR=0.33
+  reposo 298s (gap objetivo 312s)
+[f2b] episodio 7/10 src=10.50.0.206
+   f2b already running
+   victim reset ok
+  -> detected=True contained=True MTTD=0.85 MTTR=0.55
+  reposo 318s (gap objetivo 334s)
+[f2b] episodio 8/10 src=10.50.0.207
+   f2b already running
+   victim reset ok
+  -> detected=True contained=True MTTD=1.14 MTTR=0.29
+  reposo 295s (gap objetivo 310s)
+[f2b] episodio 9/10 src=10.50.0.208
+   f2b already running
+   victim reset ok
+  -> detected=True contained=True MTTD=0.99 MTTR=0.5
+  reposo 293s (gap objetivo 307s)
+[f2b] episodio 10/10 src=10.50.0.209
+   f2b already running
+   victim reset ok
+  -> detected=True contained=True MTTD=0.53 MTTR=0.85
+=== campana f2b finalizada ===

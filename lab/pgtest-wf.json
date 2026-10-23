@@ -1,0 +1,37 @@
+{
+  "name": "PG_TEST_WH",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pgtest",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "id": "wh-1",
+      "webhookId": "pgtest-webhook-id-001"
+    },
+    {
+      "parameters": {
+        "jsCode": "let out = {};\ntry {\n  const fs = require('fs');\n  out.fs = 'OK';\n} catch(e) { out.fs = 'FAIL: '+e.message; }\ntry {\n  const pg = require('pg');\n  out.pg = 'OK';\n  out.PgVersion = (pg.version)||'unknown';\n} catch(e) { out.pg = 'FAIL: '+e.message; }\ntry {\n  const cp = require('child_process');\n  out.child_process = 'OK';\n} catch(e) { out.child_process = 'FAIL: '+e.message; }\nreturn [{json: out}];"
+      },
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [240, 0],
+      "id": "code-1"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [[{ "node": "Code", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

@@ -22,3 +22,12 @@ Para que estos scripts de JavaScript se ejecuten correctamente en un entorno Doc
 
 ```env
 NODE_FUNCTION_ALLOW_EXTERNAL=pg,axios,fs,readline,child_process,util
+```
+
+## 🧪 Artefacto del experimento (campañas E1–E3)
+
+El directorio [`lab/`](lab/) contiene la implementación que se midió, el generador de ataques, el agente de bloqueo, el catálogo de reglas y los registros crudos de la campaña del 16/10/2026, junto con las instrucciones de reproducción y los límites conocidos: ver [`lab/README.md`](lab/README.md).
+
+El directorio [`analysis/`](analysis/) contiene los scripts que regeneran las Tablas 9 y 10 y el análisis de potencia.
+
+> La implementación de referencia por etapas (Fase 1) está en `Logic/`. El pipeline medido es una versión serializada en un solo nodo `Code` y no es idéntico a esa implementación: las diferencias están declaradas en `lab/README.md`.

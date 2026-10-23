@@ -1,0 +1,108 @@
+{
+  "id": "AZj9XoI9f4EiKcY1",
+  "name": "SIEM_SOAR_Pipeline",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      },
+      "name": "ScheduleTrigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -200,
+        -100
+      ],
+      "id": "sched-1"
+    },
+    {
+      "parameters": {},
+      "name": "ManualTrigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -200,
+        100
+      ],
+      "id": "manual-1"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "runpipeline",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -200,
+        300
+      ],
+      "id": "wh-1",
+      "webhookId": "runpipeline-wh-001"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pipeline SIEM-SOAR (nodo Code, ejecucion serializada por Cron cada T segundos)\n// Implementa: R1 (ventana deslizante en BD), R2 (offset por archivo/inodo),\n// R4 (validacion de IP), R5 (lista de exclusion), R6 (TTL), R8 (bitacora de corrida).\n// Multi-fuente: auth.log (SSH), security/alerts.log (iptables DROP / port scan),\n// apache_access/all.log (SQLi). Correlacion generalizada a TODAS las reglas activas.\nconst fs = require('fs');\nconst pg = require('pg');\nconst http = require('http');\n\nconst AUTH_LOG = '/home/node/.n8n-files/auth.log';\nconst SEC_LOG = '/home/node/.n8n-files/security/alerts.log';\nconst APACHE_LOG = '/home/node/.n8n-files/apache_access/all.log';\nconst BLOCK_AGENT = 'http://lab-victim:9000';\nconst PG = { host: 'lab-postgres', port: 5432, user: 'admin', password: 'admin', database: 'security_monitoring' };\n\nconst IPV4 = /^(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3}$/;\nconst EXCLUDE = new Set(['10.50.0.1', '127.0.0.1']); // R5: gateway/admin\nconst GRACE = 180; // s: horizonte de ingesta que tolera el sondeo por lotes (evita re-alertar)\n\nconst pool = new pg.Pool(PG);\nconst out = {};\n\nfunction ensureSchema() {\n  return pool.query(`\n    CREATE TABLE IF NOT EXISTS parsed_events (\n      id BIGSERIAL PRIMARY KEY,\n      event_ts TIMESTAMPTZ NOT NULL,\n      rule_id INTEGER,\n      rule_name TEXT,\n      src_ip INET,\n      raw_log TEXT,\n      ingest_ts TIMESTAMPTZ DEFAULT now()\n    );\n    CREATE TABLE IF NOT EXISTS file_offsets (\n      path TEXT PRIMARY KEY,\n      inode TEXT,\n      read_offset BIGINT,\n      updated_at TIMESTAMPTZ DEFAULT now()\n    );\n    CREATE TABLE IF NOT EXISTS lab_config (key TEXT PRIMARY KEY, value TEXT);\n    CREATE TABLE IF NOT EXISTS pipeline_runs (\n      id BIGSERIAL PRIMARY KEY,\n      run_ts TIMESTAMPTZ DEFAULT now(),\n      arm TEXT,\n      lines_read INTEGER,\n      events_parsed INTEGER,\n      alerts_created INTEGER\n    );\n    INSERT INTO lab_config(key,value) VALUES ('arm','n8n') ON CONFLICT (key) DO NOTHING;\n  `);\n}\n\nfunction stampFor(year, monName, day, hh, mm, ss) {\n  const months = { Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11 };\n  const m = months[monName];\n  if (m === undefined) return null;\n  return new Date(Date.UTC(year, m, Number(day), Number(hh), Number(mm), Number(ss)));\n}\n\n// --- R2: lectura incremental con offset por archivo+inodo ---\nasync function readNew(path) {\n  let st;\n  try { st = fs.statSync(path); } catch (e) { return { lines: [], inode: null, newOffset: 0, exists: false }; }\n  const inode = String(st.ino);\n  const prev = (await pool.query(`SELECT inode, read_offset FROM file_offsets WHERE path=$1`, [path])).rows[0];\n  let start = (prev && prev.inode === inode) ? Number(prev.read_offset) : 0;\n  const size = st.size;\n  if (size < start) start = 0;\n  let text = '';\n  const len = size - start;\n  if (len > 0) {\n    const fd = fs.openSync(path, 'r');\n    const buf = Buffer.alloc(len);\n    fs.readSync(fd, buf, 0, len, start);\n    fs.closeSync(fd);\n    text = buf.toString('utf8');\n  }\n  let newOffset = size;\n  let lines = text.split('\\n');\n  if (text.length > 0 && !text.endsWith('\\n')) {\n    const last = lines.pop();\n    newOffset = size - Buffer.byteLength(last, 'utf8');\n  }\n  await pool.query(`INSERT INTO file_offsets(path,inode,read_offset,updated_at) VALUES($1,$2,$3,now())\n    ON CONFLICT (path) DO UPDATE SET inode=EXCLUDED.inode, read_offset=EXCLUDED.read_offset, updated_at=now()`,\n    [path, inode, newOffset]);\n  return { lines, inode, newOffset, exists: true };\n}\n\n// --- Parsers por fuente ---\nconst RE_AUTH = /^([A-Z][a-z]{2})\\s+(\\d{1,2})\\s+(\\d{2}):(\\d{2}):(\\d{2})\\s+\\S+\\s+\\S+\\s+sshd\\[\\d+\\]:\\s+Failed password for (?:invalid user )?\\S+ from ((?:\\d{1,3}\\.){3}\\d{1,3}) port/;\nfunction parseAuth(line, year) {\n  const m = line.match(RE_AUTH);\n  if (!m) return null;\n  return { src: m[6], ts: stampFor(year, m[1], m[2], m[3], m[4], m[5]) };\n}\n\nconst RE_SEC = /^([A-Z][a-z]{2})\\s+(\\d{1,2})\\s+(\\d{2}):(\\d{2}):(\\d{2})\\s+\\S+\\s+kernel:\\s+iptables DROP:.*SRC=((?:\\d{1,3}\\.){3}\\d{1,3})/;\nfunction parseSec(line, year) {\n  const m = line.match(RE_SEC);\n  if (!m) return null;\n  return { src: m[6], ts: stampFor(year, m[1], m[2], m[3], m[4], m[5]) };\n}\n\nconst RE_APACHE = /^((?:\\d{1,3}\\.){3}\\d{1,3})\\s+\\S+\\s+\\S+\\s+\\[(\\d{1,2})\\/([A-Za-z]{3})\\/(\\d{4}):(\\d{2}):(\\d{2}):(\\d{2})\\s+[^\\]]*\\]\\s+\"([A-Z]+)\\s+(\\S+)\\s+HTTP\\/[\\d.]+\"/;\nfunction parseApache(line) {\n  const m = line.match(RE_APACHE);\n  if (!m) return null;\n  const ts = stampFor(Number(m[4]), m[3], m[2], m[5], m[6], m[7]);\n  return { src: m[1], ts, method: m[8], path: m[9] };\n}\n\n// Fuente -> parser estructural (extrae src/ts). El patron de CADA regla\n// habilitada se evalua sobre la linea cruda, de modo que una linea puede\n// disparar varias reglas y una linea benigna no genera ningun evento.\nconst SOURCES = [\n  { path: AUTH_LOG, parser: (l, y) => parseAuth(l, y) },\n  { path: SEC_LOG, parser: (l, y) => parseSec(l, y) },\n  { path: APACHE_LOG, parser: (l) => parseApache(l) },\n];\n\nasync function main() {\n  await ensureSchema();\n  const armRow = (await pool.query(`SELECT value FROM lab_config WHERE key='arm'`)).rows[0];\n  const arm = armRow ? armRow.value : 'n8n';\n  out.arm = arm;\n\n  const rules = (await pool.query(`SELECT id,name,pattern,severity,threshold,time_window FROM detection_rules WHERE enabled=true`)).rows;\n  const year = new Date().getUTCFullYear();\n  const ruleRes = rules\n    .map((r) => { try { return { rule: r, re: new RegExp(r.pattern, 'i') }; } catch (e) { return null; } })\n    .filter(Boolean);\n\n  let linesRead = 0, eventsParsed = 0;\n  for (const src of SOURCES) {\n    const { lines } = await readNew(src.path);\n    for (const line of lines) {\n      if (!line.trim()) continue;\n      linesRead++;\n      const p = src.parser(line, year);\n      if (!p || !p.src || !p.ts) continue;\n      if (!IPV4.test(p.src)) continue;             // R4: validacion estricta IPv4\n      for (const { rule, re } of ruleRes) {        // una linea puede disparar varias reglas\n        if (!re.test(line)) continue;\n        await pool.query(\n          `INSERT INTO parsed_events(event_ts, rule_id, rule_name, src_ip, raw_log) VALUES($1,$2,$3,$4,$5)`,\n          [p.ts.toISOString(), rule.id, rule.name, p.src, line]);\n        eventsParsed++;\n      }\n    }\n  }\n\n  // --- Correlacion sobre ventana deslizante (R1), para TODAS las reglas activas ---\n  let alertsCreated = 0;\n  for (const rule of rules) {\n    const win = Number(rule.time_window) || 300;\n    const thr = Number(rule.threshold) || 5;\n    // R1 ventana deslizante anclada al evento mas reciente de cada (regla, IP):\n    // asi una rafaga procesada en lote (sondeo periodico) no se descarta por\n    // llegar \"vieja\" cuando time_window es corta (p.ej. SQLi = 1s). El horizonte\n    // de ingesta GRACE hace que el evento expire y no re-alerte indefinidamente.\n    const hits = (await pool.query(\n      `WITH recent AS (\n         SELECT src_ip, event_ts FROM parsed_events\n         WHERE rule_id=$1 AND ingest_ts > now() - ($4 || ' seconds')::interval\n       ),\n       anch AS (SELECT src_ip, max(event_ts) AS m FROM recent GROUP BY src_ip)\n       SELECT r.src_ip::text AS ip, count(*)::int AS c, min(r.event_ts) AS first_ts, max(r.event_ts) AS last_ts\n       FROM recent r JOIN anch a USING (src_ip)\n       WHERE r.event_ts > a.m - ($2 || ' seconds')::interval\n       GROUP BY r.src_ip HAVING count(*) >= $3`, [rule.id, win, thr, GRACE])).rows;\n\n    for (const h of hits) {\n      const ip = h.ip;\n      if (EXCLUDE.has(ip)) continue; // R5\n      // dedup: no re-alertar la misma IP dentro de la ventana+horizonte\n      const dup = (await pool.query(\n        `SELECT 1 FROM alerts WHERE source_ip=$1 AND category=$2 AND timestamp > now() - ($3 || ' seconds')::interval LIMIT 1`,\n        [ip, rule.name, win + GRACE + 60])).rows.length > 0;\n      if (dup) continue;\n\n      const desc = `${rule.name}: ${h.c} eventos en ${win}s desde ${ip}`;\n      const a = await pool.query(\n        `INSERT INTO alerts(timestamp, severity, category, source_host, source_ip, target_host, event_count, description, raw_log, status)\n         VALUES (now(), $1, $2, 'lab-victim', $3, 'lab-victim', $4, $5, $6, 'new') RETURNING id, timestamp`,\n        [rule.severity, rule.name, ip, h.c, desc, `matched ${rule.name} from ${ip}`]);\n      alertsCreated++;\n      out.last_alert_id = a.rows[0].id;\n\n      // attack_patterns\n      await pool.query(\n        `INSERT INTO attack_patterns(pattern_type, source_ip, target_host, occurrence_count, is_blocked)\n         VALUES ($1,$2,'lab-victim',$3,false)\n         ON CONFLICT (source_ip, pattern_type) DO UPDATE SET last_seen=now(), occurrence_count=attack_patterns.occurrence_count+$3`,\n        [rule.name, ip, h.c]);\n\n      // --- Respuesta activa (brazo n8n), para todas las reglas ---\n      if (arm === 'n8n') {\n        try {\n          await new Promise((res) => {\n            const req = http.get(`${BLOCK_AGENT}/block?ip=${ip}&ttl=600`, (r) => { r.resume(); r.on('end', res); });\n            req.on('error', res); req.setTimeout(5000, () => { req.destroy(); res(); });\n          });\n          await pool.query(`UPDATE attack_patterns SET is_blocked=true WHERE source_ip=$1 AND pattern_type=$2`, [ip, rule.name]);\n          out.blocked = (out.blocked || 0) + 1;\n        } catch (e) { out.block_error = String(e); }\n      }\n    }\n  }\n\n  // --- R8: bitacora de corrida ---\n  await pool.query(`INSERT INTO pipeline_runs(arm,lines_read,events_parsed,alerts_created) VALUES($1,$2,$3,$4)`,\n    [arm, linesRead, eventsParsed, alertsCreated]);\n\n  out.lines_read = linesRead;\n  out.events_parsed = eventsParsed;\n  out.alerts_created = alertsCreated;\n  return finish(linesRead, eventsParsed, alertsCreated, arm);\n}\n\nfunction finish(linesRead, eventsParsed, alertsCreated, arm) {\n  out.lines_read = linesRead; out.events_parsed = eventsParsed; out.alerts_created = alertsCreated;\n  return [{ json: out }];\n}\n\ntry {\n  return await main();\n} finally {\n  await pool.end();\n}\n"
+      },
+      "name": "Pipeline",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        60,
+        100
+      ],
+      "id": "code-1"
+    }
+  ],
+  "connections": {
+    "ScheduleTrigger": {
+      "main": [
+        [
+          {
+            "node": "Pipeline",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ManualTrigger": {
+      "main": [
+        [
+          {
+            "node": "Pipeline",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Pipeline",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "saveExecutionProgress": true
+  }
+}

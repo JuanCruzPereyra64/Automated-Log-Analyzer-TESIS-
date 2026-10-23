@@ -1,0 +1,77 @@
+{
+  "generated_at": "2026-10-17T12:24:18.210Z",
+  "criteria": {
+    "R7": "Simular 429: el flujo continúa y registra el estado",
+    "R9": "Puntaje alto/bajo: comprobar la bifurcación"
+  },
+  "total": 11,
+  "passed": 11,
+  "results": [
+    {
+      "id": "R7.1",
+      "desc": "HTTP 429 → el flujo continúa y registra estado degraded_quota",
+      "pass": true,
+      "detail": "status=degraded_quota"
+    },
+    {
+      "id": "R7.2",
+      "desc": "Retry-After se lee y registra (60 s)",
+      "pass": true,
+      "detail": "retry_after_s=60"
+    },
+    {
+      "id": "R7.3",
+      "desc": "Cuota agotada → no reintenta dentro de Retry-After (sin nueva llamada)",
+      "pass": true,
+      "detail": "calls=1"
+    },
+    {
+      "id": "R7.4",
+      "desc": "HTTP 200 → puntaje y país registrados",
+      "pass": true,
+      "detail": "status=ok score=92 country=RU"
+    },
+    {
+      "id": "R7.5",
+      "desc": "Segunda consulta de la misma IP → servida desde caché",
+      "pass": true,
+      "detail": "status=cached hits=1"
+    },
+    {
+      "id": "R9.1",
+      "desc": "Puntaje 92 (>=75) → bloqueo automático",
+      "pass": true,
+      "detail": "abuseConfidenceScore 92 >= 75"
+    },
+    {
+      "id": "R9.2",
+      "desc": "Puntaje 60 (50-74) → revisión humana",
+      "pass": true,
+      "detail": "abuseConfidenceScore 60 en el rango 50-74"
+    },
+    {
+      "id": "R9.3",
+      "desc": "Puntaje 20 (<50) → sin bloqueo automático",
+      "pass": true,
+      "detail": "abuseConfidenceScore 20 < 50"
+    },
+    {
+      "id": "R9.4",
+      "desc": "Sin puntaje (cuota agotada) → sin bloqueo automático",
+      "pass": true,
+      "detail": "enriquecimiento no disponible (sin puntaje) → sin bloqueo automático"
+    },
+    {
+      "id": "R9.5",
+      "desc": "Borde: puntaje 75 → bloqueo automático",
+      "pass": true,
+      "detail": "abuseConfidenceScore 75 >= 75"
+    },
+    {
+      "id": "NET.1",
+      "desc": "api.abuseipdb.com alcanzable; degradación controlada sin clave",
+      "pass": true,
+      "detail": "status=error_401"
+    }
+  ]
+}

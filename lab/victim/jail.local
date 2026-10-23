@@ -1,0 +1,19 @@
+[DEFAULT]
+backend = polling
+polltime = 1
+bantime = 300
+findtime = 300
+maxretry = 5
+
+[sshd]
+enabled = true
+filter = alpine-sshd
+port = ssh
+logpath = /var/log/auth.log
+maxretry = 5
+findtime = 300
+bantime = 300
+action = iptables[name=SSH, port=ssh, protocol=tcp, blocktype=DROP]
+
+[sshd-ddos]
+enabled = false

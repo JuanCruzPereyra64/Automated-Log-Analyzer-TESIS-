@@ -1,0 +1,51 @@
+=== campana arm=n8n n=10 spacing=300.0s jitter=60.0s seed=12345 -> C:\Users\Usuario\Documents\TestTesis\lab\results\n8n_e1.jsonl
+[n8n] episodio 1/10 src=10.50.0.200
+   f2b stopped
+   victim reset ok
+  -> detected=True contained=True MTTD=14.27 MTTR=1.09
+  reposo 298s (gap objetivo 325s)
+[n8n] episodio 2/10 src=10.50.0.201
+   f2b stopped
+   victim reset ok
+  -> detected=True contained=True MTTD=48.96 MTTR=0.51
+  reposo 236s (gap objetivo 301s)
+[n8n] episodio 3/10 src=10.50.0.202
+   f2b stopped
+   victim reset ok
+  -> detected=True contained=True MTTD=46.56 MTTR=1.0
+  reposo 289s (gap objetivo 350s)
+[n8n] episodio 4/10 src=10.50.0.203
+   f2b stopped
+   victim reset ok
+  -> detected=True contained=True MTTD=60.01 MTTR=0.41
+  reposo 246s (gap objetivo 318s)
+[n8n] episodio 5/10 src=10.50.0.204
+   f2b stopped
+   victim reset ok
+  -> detected=True contained=True MTTD=40.18 MTTR=0.27
+  reposo 271s (gap objetivo 322s)
+[n8n] episodio 6/10 src=10.50.0.205
+   f2b stopped
+   victim reset ok
+  -> detected=True contained=True MTTD=57.43 MTTR=0.53
+  reposo 223s (gap objetivo 312s)
+[n8n] episodio 7/10 src=10.50.0.206
+   f2b stopped
+   victim reset ok
+  -> detected=True contained=True MTTD=2.89 MTTR=0.7
+  reposo 316s (gap objetivo 334s)
+[n8n] episodio 8/10 src=10.50.0.207
+   f2b stopped
+   victim reset ok
+  -> detected=True contained=True MTTD=30.93 MTTR=0.24
+  reposo 266s (gap objetivo 310s)
+[n8n] episodio 9/10 src=10.50.0.208
+   f2b stopped
+   victim reset ok
+  -> detected=True contained=True MTTD=17.81 MTTR=0.73
+  reposo 273s (gap objetivo 307s)
+[n8n] episodio 10/10 src=10.50.0.209
+   f2b stopped
+   victim reset ok
+  -> detected=True contained=True MTTD=57.9 MTTR=0.78
+=== campana n8n finalizada ===

@@ -15,6 +15,16 @@ n8n-data/binaryData/
 n8n-data/logs/
 n8n-data/.cache/
 
-# IMPORTANTE: SI se sube esto (es tu flujo):
-# n8n-data/database.sqlite
-# n8n-data/config
+# Configuración y base de datos de n8n: contienen credenciales y datos de ejecución.
+# NO se versionan. Se regeneran al levantar el entorno.
+n8n-data/database.sqlite
+n8n-data/config
+n8n-data/
+
+# Artefacto del experimento: estado generado
+lab/pgdata/
+lab/n8ndata/
+lab/runtime/
+lab/__pycache__/
+__pycache__/
+*.pyc
