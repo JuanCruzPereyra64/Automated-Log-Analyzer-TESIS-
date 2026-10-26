@@ -80,6 +80,14 @@ python analysis/t2_metrics.py         # U, p exacta, Hodges-Lehmann, A12 y métr
 - `results/*_campaign.out`, `results/n8n_campaigns.log`: salida cruda de las corridas.
 - `results/smoke_*.jsonl`: corridas de humo previas a la campaña; **no** forman parte de las Tablas 9 y 10.
 
+## Cómo verificar los manifiestos
+
+Los manifiestos registran el SHA-256 de cada archivo tal como estaba en el disco de la máquina de medición: Windows con `core.autocrlf=true`. En ese equipo los archivos se ven con CRLF; el repositorio guarda el mismo contenido con LF.
+
+Por eso un hash calculado sobre un clon limpio no coincide con el del manifiesto, aunque el contenido sea el mismo. Para comprobarlo hay que ejecutar `python lab/verify_manifest.py`. El script toma el contenido del commit con `git show HEAD:<ruta>` y prueba las dos convenciones; informa `OK (LF)`, `OK (CRLF)` o `DISCORDANCIA` por entrada.
+
+La publicación no alteró el contenido medido: Git solo normalizó los fines de línea. Las 18 entradas de los dos manifiestos coinciden con el contenido del commit al aplicarle CRLF.
+
 ## Límites conocidos (leer antes de interpretar)
 
 1. **T = 60 s**: el `ScheduleTrigger` dispara cada minuto, y el generador sondea la contención cada 1 s. El MTTD del brazo n8n está dominado por ese piso de sondeo (sección 7.1 del informe).

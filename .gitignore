@@ -28,3 +28,6 @@ lab/runtime/
 lab/__pycache__/
 __pycache__/
 *.pyc
+
+# Documentos de trabajo del informe: no forman parte del artefacto
+v3/
