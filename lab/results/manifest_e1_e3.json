@@ -1,0 +1,394 @@
+{
+  "campaign": "e1_e3",
+  "generated_utc": "2026-10-26T12:07:17Z",
+  "generator": "make_manifest.py (posterior a la campana; no participa de la medicion)",
+  "root": ".",
+  "git": {
+    "commit": "38d2d3ca23bb3d35a4eaf19285d2fb89c7e2d13d",
+    "branch": "main",
+    "dirty": false,
+    "working_tree_changes": 0,
+    "tags": [
+      "campana-2026-10-16"
+    ]
+  },
+  "system_files_sha256": {
+    "lab/pipeline.js": "d34268e9d888dce24e2ad7942a5f5f32b5c812ae7cbf60f9256dbc85a6f37c42",
+    "lab/pipeline-wf.json": "e6859ac75c4451b44f0802edc21a70d105852e4b6e66dca59fafb05f1d71bec4",
+    "lab/victim/block_agent.py": "f3b886848f469e7c1a85d887975f02cc14a175f8e6eeb34dee3ab7241d91c238",
+    "lab/victim/jail.local": "da6204f7b611047d19f2eec8dc9a57e6ca59c575c275fe908d821bce3952c9f7",
+    "lab/scripts/seed_rules.sql": "2b20ab003fb127910fe8d8db4e62fb7ee3d72891df6401f2d662744daa6c0adb",
+    "lab/docker-compose.yml": "9f1ec124d439f9897bb80cbad1479ebd8e3c194713fee1dc85d74bbd1ce36ed3"
+  },
+  "results_sha256": {
+    "lab/results/n8n_e1.jsonl": {
+      "sha256": "5ab889ddc4dc892283906f2d50468f02b0a2c86a17c4b482b2e044c9c9787e09",
+      "bytes": 5203
+    },
+    "lab/results/n8n_e2.jsonl": {
+      "sha256": "49e57e5476561b0b73e39d23d6a070e66ee74116b27849a9d05910e86b850e8d",
+      "bytes": 5194
+    },
+    "lab/results/n8n_e3.jsonl": {
+      "sha256": "c740f106dcfed103413fc8d7d2aa5efb8d87a74e90b7a23216b1309048039c3b",
+      "bytes": 5192
+    },
+    "lab/results/f2b_e1.jsonl": {
+      "sha256": "e6e11936f0acf6a2f6ee18bef99a4f739cfd36bb954f1799d3d179d4513ef81d",
+      "bytes": 5195
+    }
+  },
+  "window_utc": {
+    "start": "2026-10-16T13:31:22Z",
+    "end": "2026-10-16T21:41:40Z",
+    "duration_s": 29417.827
+  },
+  "seed": {
+    "declared": null,
+    "found_in_records": [
+      12345
+    ],
+    "nota": "El generador usa la semilla solo para el jitter del espaciado; el orden de corridas no se aleatorizo."
+  },
+  "run_order": [
+    {
+      "episode": 1,
+      "index": 0,
+      "scenario": "E1",
+      "arm": "n8n",
+      "src_ip": "10.50.0.200",
+      "t0_iso": "2026-10-16T13:31:22.502Z"
+    },
+    {
+      "episode": 2,
+      "index": 1,
+      "scenario": "E1",
+      "arm": "n8n",
+      "src_ip": "10.50.0.201",
+      "t0_iso": "2026-10-16T13:36:47.643Z"
+    },
+    {
+      "episode": 3,
+      "index": 2,
+      "scenario": "E1",
+      "arm": "n8n",
+      "src_ip": "10.50.0.202",
+      "t0_iso": "2026-10-16T13:41:48.862Z"
+    },
+    {
+      "episode": 4,
+      "index": 3,
+      "scenario": "E1",
+      "arm": "n8n",
+      "src_ip": "10.50.0.203",
+      "t0_iso": "2026-10-16T13:47:36.848Z"
+    },
+    {
+      "episode": 5,
+      "index": 4,
+      "scenario": "E1",
+      "arm": "n8n",
+      "src_ip": "10.50.0.204",
+      "t0_iso": "2026-10-16T13:52:54.788Z"
+    },
+    {
+      "episode": 6,
+      "index": 5,
+      "scenario": "E1",
+      "arm": "n8n",
+      "src_ip": "10.50.0.205",
+      "t0_iso": "2026-10-16T13:58:37.128Z"
+    },
+    {
+      "episode": 7,
+      "index": 6,
+      "scenario": "E1",
+      "arm": "n8n",
+      "src_ip": "10.50.0.206",
+      "t0_iso": "2026-10-16T14:03:31.679Z"
+    },
+    {
+      "episode": 8,
+      "index": 7,
+      "scenario": "E1",
+      "arm": "n8n",
+      "src_ip": "10.50.0.207",
+      "t0_iso": "2026-10-16T14:09:05.094Z"
+    },
+    {
+      "episode": 9,
+      "index": 8,
+      "scenario": "E1",
+      "arm": "n8n",
+      "src_ip": "10.50.0.208",
+      "t0_iso": "2026-10-16T14:14:17.252Z"
+    },
+    {
+      "episode": 10,
+      "index": 9,
+      "scenario": "E1",
+      "arm": "n8n",
+      "src_ip": "10.50.0.209",
+      "t0_iso": "2026-10-16T14:19:34.492Z"
+    },
+    {
+      "episode": 1,
+      "index": 0,
+      "scenario": "E1",
+      "arm": "f2b",
+      "src_ip": "10.50.0.200",
+      "t0_iso": "2026-10-16T14:23:18.401Z"
+    },
+    {
+      "episode": 2,
+      "index": 1,
+      "scenario": "E1",
+      "arm": "f2b",
+      "src_ip": "10.50.0.201",
+      "t0_iso": "2026-10-16T14:28:36.894Z"
+    },
+    {
+      "episode": 3,
+      "index": 2,
+      "scenario": "E1",
+      "arm": "f2b",
+      "src_ip": "10.50.0.202",
+      "t0_iso": "2026-10-16T14:33:40.680Z"
+    },
+    {
+      "episode": 4,
+      "index": 3,
+      "scenario": "E1",
+      "arm": "f2b",
+      "src_ip": "10.50.0.203",
+      "t0_iso": "2026-10-16T14:39:27.979Z"
+    },
+    {
+      "episode": 5,
+      "index": 4,
+      "scenario": "E1",
+      "arm": "f2b",
+      "src_ip": "10.50.0.204",
+      "t0_iso": "2026-10-16T14:44:42.339Z"
+    },
+    {
+      "episode": 6,
+      "index": 5,
+      "scenario": "E1",
+      "arm": "f2b",
+      "src_ip": "10.50.0.205",
+      "t0_iso": "2026-10-16T14:50:05.031Z"
+    },
+    {
+      "episode": 7,
+      "index": 6,
+      "scenario": "E1",
+      "arm": "f2b",
+      "src_ip": "10.50.0.206",
+      "t0_iso": "2026-10-16T14:55:20.902Z"
+    },
+    {
+      "episode": 8,
+      "index": 7,
+      "scenario": "E1",
+      "arm": "f2b",
+      "src_ip": "10.50.0.207",
+      "t0_iso": "2026-10-16T15:00:53.318Z"
+    },
+    {
+      "episode": 9,
+      "index": 8,
+      "scenario": "E1",
+      "arm": "f2b",
+      "src_ip": "10.50.0.208",
+      "t0_iso": "2026-10-16T15:06:01.851Z"
+    },
+    {
+      "episode": 10,
+      "index": 9,
+      "scenario": "E1",
+      "arm": "f2b",
+      "src_ip": "10.50.0.209",
+      "t0_iso": "2026-10-16T15:11:09.984Z"
+    },
+    {
+      "episode": 1,
+      "index": 0,
+      "scenario": "e2",
+      "arm": "n8n",
+      "src_ip": "10.50.0.200",
+      "t0_iso": "2026-10-16T20:04:15.844Z"
+    },
+    {
+      "episode": 2,
+      "index": 1,
+      "scenario": "e2",
+      "arm": "n8n",
+      "src_ip": "10.50.0.201",
+      "t0_iso": "2026-10-16T20:09:53.209Z"
+    },
+    {
+      "episode": 3,
+      "index": 2,
+      "scenario": "e2",
+      "arm": "n8n",
+      "src_ip": "10.50.0.202",
+      "t0_iso": "2026-10-16T20:14:47.341Z"
+    },
+    {
+      "episode": 4,
+      "index": 3,
+      "scenario": "e2",
+      "arm": "n8n",
+      "src_ip": "10.50.0.203",
+      "t0_iso": "2026-10-16T20:20:36.917Z"
+    },
+    {
+      "episode": 5,
+      "index": 4,
+      "scenario": "e2",
+      "arm": "n8n",
+      "src_ip": "10.50.0.204",
+      "t0_iso": "2026-10-16T20:25:47.215Z"
+    },
+    {
+      "episode": 6,
+      "index": 5,
+      "scenario": "e2",
+      "arm": "n8n",
+      "src_ip": "10.50.0.205",
+      "t0_iso": "2026-10-16T20:31:11.062Z"
+    },
+    {
+      "episode": 7,
+      "index": 6,
+      "scenario": "e2",
+      "arm": "n8n",
+      "src_ip": "10.50.0.206",
+      "t0_iso": "2026-10-16T20:36:23.867Z"
+    },
+    {
+      "episode": 8,
+      "index": 7,
+      "scenario": "e2",
+      "arm": "n8n",
+      "src_ip": "10.50.0.207",
+      "t0_iso": "2026-10-16T20:41:57.474Z"
+    },
+    {
+      "episode": 9,
+      "index": 8,
+      "scenario": "e2",
+      "arm": "n8n",
+      "src_ip": "10.50.0.208",
+      "t0_iso": "2026-10-16T20:47:08.483Z"
+    },
+    {
+      "episode": 10,
+      "index": 9,
+      "scenario": "e2",
+      "arm": "n8n",
+      "src_ip": "10.50.0.209",
+      "t0_iso": "2026-10-16T20:52:16.142Z"
+    },
+    {
+      "episode": 1,
+      "index": 0,
+      "scenario": "e3",
+      "arm": "n8n",
+      "src_ip": "10.50.0.200",
+      "t0_iso": "2026-10-16T20:52:47.607Z"
+    },
+    {
+      "episode": 2,
+      "index": 1,
+      "scenario": "e3",
+      "arm": "n8n",
+      "src_ip": "10.50.0.201",
+      "t0_iso": "2026-10-16T20:58:14.752Z"
+    },
+    {
+      "episode": 3,
+      "index": 2,
+      "scenario": "e3",
+      "arm": "n8n",
+      "src_ip": "10.50.0.202",
+      "t0_iso": "2026-10-16T21:03:15.360Z"
+    },
+    {
+      "episode": 4,
+      "index": 3,
+      "scenario": "e3",
+      "arm": "n8n",
+      "src_ip": "10.50.0.203",
+      "t0_iso": "2026-10-16T21:09:07.701Z"
+    },
+    {
+      "episode": 5,
+      "index": 4,
+      "scenario": "e3",
+      "arm": "n8n",
+      "src_ip": "10.50.0.204",
+      "t0_iso": "2026-10-16T21:14:23.958Z"
+    },
+    {
+      "episode": 6,
+      "index": 5,
+      "scenario": "e3",
+      "arm": "n8n",
+      "src_ip": "10.50.0.205",
+      "t0_iso": "2026-10-16T21:19:45.780Z"
+    },
+    {
+      "episode": 7,
+      "index": 6,
+      "scenario": "e3",
+      "arm": "n8n",
+      "src_ip": "10.50.0.206",
+      "t0_iso": "2026-10-16T21:24:59.845Z"
+    },
+    {
+      "episode": 8,
+      "index": 7,
+      "scenario": "e3",
+      "arm": "n8n",
+      "src_ip": "10.50.0.207",
+      "t0_iso": "2026-10-16T21:30:31.793Z"
+    },
+    {
+      "episode": 9,
+      "index": 8,
+      "scenario": "e3",
+      "arm": "n8n",
+      "src_ip": "10.50.0.208",
+      "t0_iso": "2026-10-16T21:35:44.613Z"
+    },
+    {
+      "episode": 10,
+      "index": 9,
+      "scenario": "e3",
+      "arm": "n8n",
+      "src_ip": "10.50.0.209",
+      "t0_iso": "2026-10-16T21:41:37.767Z"
+    }
+  ],
+  "n_episodes": 40,
+  "environment": {
+    "docker_engine": "29.0.1",
+    "images": {
+      "docker.n8n.io/n8nio/n8n:latest": "docker.n8n.io/n8nio/n8n@sha256:dd580fe1ab6e99e85bc66f2acf8bc8c5e9409fbe61b2e2803c5024403ef52833|sha256:c8d7cd6bf08e1837180b767d77903889e0f3f022accda90579f5e99ca2a2bdfb",
+      "postgres:15-alpine": "postgres@sha256:f7d23353e1b15400d22ebe31189f4d314b87a4c129cc400c8c2d8d4ca127bf81|sha256:319d040b5d68e3e5b98a238f0b5d375b4b4d9c5b3a6a9afb0308a8bcf0de72a5",
+      "nota": "Las etiquetas son las que usaba el laboratorio al medir. La imagen de n8n se obtuvo con la etiqueta latest: el digest registrado permite fijarla (accion 8 de Decisiones_y_acciones_para_los_autores.md)."
+    },
+    "containers": {
+      "n8n": "no disponible (contenedor detenido)",
+      "postgres": "no disponible (contenedor detenido)",
+      "victim_alpine": "no disponible (contenedor detenido)",
+      "victim_openssh": "no disponible (contenedor detenido)",
+      "victim_apache": "no disponible (contenedor detenido)",
+      "victim_fail2ban": "no disponible (contenedor detenido)",
+      "victim_iptables": "no disponible (contenedor detenido)",
+      "attacker_python": "no disponible (contenedor detenido)"
+    }
+  }
+}
