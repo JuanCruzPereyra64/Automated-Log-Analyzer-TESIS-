@@ -1,0 +1,3 @@
+# Los scripts del laboratorio se copian a contenedores Linux: deben tener LF.
+*.sh text eol=lf
+*.sql text eol=lf

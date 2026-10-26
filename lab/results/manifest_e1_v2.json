@@ -1,0 +1,224 @@
+{
+  "campaign": "e1_v2",
+  "generated_utc": "2026-10-26T16:18:50Z",
+  "generator": "make_manifest.py (posterior a la campana; no participa de la medicion)",
+  "root": ".",
+  "git": {
+    "commit": "fc99b02b7fbc12c54b582bd0a15f77fb04ecbb4a",
+    "branch": "main",
+    "dirty": false,
+    "working_tree_changes": 0,
+    "tags": []
+  },
+  "system_files_sha256": {
+    "lab/pipeline.js": "d34268e9d888dce24e2ad7942a5f5f32b5c812ae7cbf60f9256dbc85a6f37c42",
+    "lab/pipeline-wf.json": "e6859ac75c4451b44f0802edc21a70d105852e4b6e66dca59fafb05f1d71bec4",
+    "lab/victim/block_agent.py": "f3b886848f469e7c1a85d887975f02cc14a175f8e6eeb34dee3ab7241d91c238",
+    "lab/victim/jail.local": "da6204f7b611047d19f2eec8dc9a57e6ca59c575c275fe908d821bce3952c9f7",
+    "lab/scripts/seed_rules.sql": "2b20ab003fb127910fe8d8db4e62fb7ee3d72891df6401f2d662744daa6c0adb",
+    "lab/docker-compose.yml": "9f1ec124d439f9897bb80cbad1479ebd8e3c194713fee1dc85d74bbd1ce36ed3"
+  },
+  "results_sha256": {
+    "lab/results/n8n_e1_v2.jsonl": {
+      "sha256": "409eb38660ea5e266ede0c249a8cb7cf3251a4bc492579a91f18af8e2dbe1a08",
+      "bytes": 5196
+    },
+    "lab/results/f2b_e1_v2.jsonl": {
+      "sha256": "c81473fc7cb0afeccbd04a664868b06ae7b9071d165d23d77046ed40366793e0",
+      "bytes": 5201
+    }
+  },
+  "window_utc": {
+    "start": "2026-10-26T14:32:37Z",
+    "end": "2026-10-26T16:16:53Z",
+    "duration_s": 6256.092
+  },
+  "seed": {
+    "declared": null,
+    "found_in_records": [
+      12345
+    ],
+    "nota": "El generador usa la semilla solo para el jitter del espaciado; el orden de corridas no se aleatorizo."
+  },
+  "run_order": [
+    {
+      "episode": 1,
+      "index": 0,
+      "scenario": "e1",
+      "arm": "n8n",
+      "src_ip": "10.50.0.200",
+      "t0_iso": "2026-10-26T14:32:37.197Z"
+    },
+    {
+      "episode": 2,
+      "index": 1,
+      "scenario": "e1",
+      "arm": "n8n",
+      "src_ip": "10.50.0.201",
+      "t0_iso": "2026-10-26T14:38:02.464Z"
+    },
+    {
+      "episode": 3,
+      "index": 2,
+      "scenario": "e1",
+      "arm": "n8n",
+      "src_ip": "10.50.0.202",
+      "t0_iso": "2026-10-26T14:43:03.208Z"
+    },
+    {
+      "episode": 4,
+      "index": 3,
+      "scenario": "e1",
+      "arm": "n8n",
+      "src_ip": "10.50.0.203",
+      "t0_iso": "2026-10-26T14:48:51.316Z"
+    },
+    {
+      "episode": 5,
+      "index": 4,
+      "scenario": "e1",
+      "arm": "n8n",
+      "src_ip": "10.50.0.204",
+      "t0_iso": "2026-10-26T14:54:08.574Z"
+    },
+    {
+      "episode": 1,
+      "index": 5,
+      "scenario": "e1",
+      "arm": "n8n",
+      "src_ip": "10.50.0.205",
+      "t0_iso": "2026-10-26T15:00:08.026Z"
+    },
+    {
+      "episode": 2,
+      "index": 6,
+      "scenario": "e1",
+      "arm": "n8n",
+      "src_ip": "10.50.0.206",
+      "t0_iso": "2026-10-26T15:05:35.123Z"
+    },
+    {
+      "episode": 3,
+      "index": 7,
+      "scenario": "e1",
+      "arm": "n8n",
+      "src_ip": "10.50.0.207",
+      "t0_iso": "2026-10-26T15:10:32.297Z"
+    },
+    {
+      "episode": 4,
+      "index": 8,
+      "scenario": "e1",
+      "arm": "n8n",
+      "src_ip": "10.50.0.208",
+      "t0_iso": "2026-10-26T15:16:22.528Z"
+    },
+    {
+      "episode": 5,
+      "index": 9,
+      "scenario": "e1",
+      "arm": "n8n",
+      "src_ip": "10.50.0.209",
+      "t0_iso": "2026-10-26T15:21:47.819Z"
+    },
+    {
+      "episode": 1,
+      "index": 10,
+      "scenario": "e1",
+      "arm": "f2b",
+      "src_ip": "10.50.0.210",
+      "t0_iso": "2026-10-26T15:28:09.921Z"
+    },
+    {
+      "episode": 2,
+      "index": 11,
+      "scenario": "e1",
+      "arm": "f2b",
+      "src_ip": "10.50.0.211",
+      "t0_iso": "2026-10-26T15:33:34.779Z"
+    },
+    {
+      "episode": 3,
+      "index": 12,
+      "scenario": "e1",
+      "arm": "f2b",
+      "src_ip": "10.50.0.212",
+      "t0_iso": "2026-10-26T15:38:38.365Z"
+    },
+    {
+      "episode": 4,
+      "index": 13,
+      "scenario": "e1",
+      "arm": "f2b",
+      "src_ip": "10.50.0.213",
+      "t0_iso": "2026-10-26T15:44:25.104Z"
+    },
+    {
+      "episode": 5,
+      "index": 14,
+      "scenario": "e1",
+      "arm": "f2b",
+      "src_ip": "10.50.0.214",
+      "t0_iso": "2026-10-26T15:49:44.839Z"
+    },
+    {
+      "episode": 1,
+      "index": 15,
+      "scenario": "e1",
+      "arm": "f2b",
+      "src_ip": "10.50.0.215",
+      "t0_iso": "2026-10-26T15:55:17.195Z"
+    },
+    {
+      "episode": 2,
+      "index": 16,
+      "scenario": "e1",
+      "arm": "f2b",
+      "src_ip": "10.50.0.216",
+      "t0_iso": "2026-10-26T16:00:44.114Z"
+    },
+    {
+      "episode": 3,
+      "index": 17,
+      "scenario": "e1",
+      "arm": "f2b",
+      "src_ip": "10.50.0.217",
+      "t0_iso": "2026-10-26T16:05:44.821Z"
+    },
+    {
+      "episode": 4,
+      "index": 18,
+      "scenario": "e1",
+      "arm": "f2b",
+      "src_ip": "10.50.0.218",
+      "t0_iso": "2026-10-26T16:11:32.937Z"
+    },
+    {
+      "episode": 5,
+      "index": 19,
+      "scenario": "e1",
+      "arm": "f2b",
+      "src_ip": "10.50.0.219",
+      "t0_iso": "2026-10-26T16:16:49.908Z"
+    }
+  ],
+  "n_episodes": 20,
+  "environment": {
+    "docker_engine": "29.0.1",
+    "images": {
+      "docker.n8n.io/n8nio/n8n:latest": "docker.n8n.io/n8nio/n8n@sha256:dd580fe1ab6e99e85bc66f2acf8bc8c5e9409fbe61b2e2803c5024403ef52833|sha256:c8d7cd6bf08e1837180b767d77903889e0f3f022accda90579f5e99ca2a2bdfb",
+      "postgres:15-alpine": "postgres@sha256:f7d23353e1b15400d22ebe31189f4d314b87a4c129cc400c8c2d8d4ca127bf81|sha256:319d040b5d68e3e5b98a238f0b5d375b4b4d9c5b3a6a9afb0308a8bcf0de72a5",
+      "nota": "Las etiquetas son las que usaba el laboratorio al medir. La imagen de n8n se obtuvo con la etiqueta latest: el digest registrado permite fijarla (accion 8 de Decisiones_y_acciones_para_los_autores.md)."
+    },
+    "containers": {
+      "n8n": "2.43.6",
+      "postgres": "psql (PostgreSQL) 15.19",
+      "victim_alpine": "NAME=\"Alpine Linux\"",
+      "victim_openssh": "no disponible (contenedor detenido)",
+      "victim_apache": "Server version: Apache/2.4.67 (Unix)",
+      "victim_fail2ban": "Fail2Ban v1.1.0",
+      "victim_iptables": "iptables v1.8.10 (nf_tables)",
+      "attacker_python": "Python 3.12.13"
+    }
+  }
+}

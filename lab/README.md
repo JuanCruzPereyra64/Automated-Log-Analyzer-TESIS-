@@ -72,7 +72,10 @@ python analysis/t2_metrics.py         # U, p exacta, Hodges-Lehmann, A12 y métr
 
 ## Registros
 
-- `results/n8n_e1.jsonl`, `results/n8n_e2.jsonl`, `results/n8n_e3.jsonl`, `results/f2b_e1.jsonl`: un registro por episodio con `t0`, `t_k`, `t_det`, `t_cont`, `MTTD`, `MTTR`, `detected`, `contained`.
+- `results/n8n_e1.jsonl`, `results/n8n_e2.jsonl`, `results/n8n_e3.jsonl`, `results/f2b_e1.jsonl`: un registro por episodio con `t0`, `t_k`, `t_det`, `t_cont`, `MTTD`, `MTTR`, `detected`, `contained`. Corresponden a la campaña del 16/10/2026.
+- `results/n8n_e1_v2.jsonl`, `results/f2b_e1_v2.jsonl`: repetición de E1 del 26/10/2026 sobre el flujo publicado; son la fuente de los valores de E1 del informe. El número de episodio vuelve a empezar en cada bloque de cinco.
+- `results/manifest_e1_e3.json`, `results/manifest_e1_v2.json`: commit, hashes SHA-256, semilla, orden y ventana de cada campaña.
+- `results/workflow_export_e1_v2.json`: exportación del flujo que ejecutó la repetición; su nodo Code coincide byte por byte con `pipeline.js` del commit medido.
 - `results/report_e2_e3.md`, `results/benign_e2_e3_summary.json`: resumen de E2/E3 y del tráfico benigno.
 - `results/*_campaign.out`, `results/n8n_campaigns.log`: salida cruda de las corridas.
 - `results/smoke_*.jsonl`: corridas de humo previas a la campaña; **no** forman parte de las Tablas 9 y 10.
